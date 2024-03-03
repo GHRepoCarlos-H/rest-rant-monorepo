@@ -1,7 +1,7 @@
 
 function Home() {
   return (
-    <main>
+    <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <h1>HOME</h1>
       <div >
         <img height="300" width="500" src="http://localhost:5000/images/chia-fruit-drink.jpg" alt="Chia Fruit Shake" />

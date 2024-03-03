@@ -18,17 +18,17 @@ function PlaceIndex(data) {
 
 	let placesFormatted = places.map((place) => {
 		return (
-			<div className="col-sm-6" key={place.placeId}>
+			<div className="col-sm-6 text-center pt-3" key={place.placeId}>
 				<h2>
 					<a href="#" onClick={() => history.push(`/places/${place.placeId}`)} >
 						{place.name}
 					</a>
 				</h2>
-				<p className="text-center">
+				<p className="text-center pt-3 text-primary">
 					{place.cuisines}
 				</p>
 				<img style={{ maxWidth: 200 }} src={place.pic} alt={place.name} />
-				<p className="text-center">
+				<p className="text-center pt-3">
 					Located in {place.city}, {place.state}
 				</p>
 			</div>
