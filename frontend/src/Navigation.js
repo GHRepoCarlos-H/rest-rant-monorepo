@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useContext } from 'react'
 import { useHistory } from "react-router";
 import { CurrentUser } from './contexts/CurrentUser';
 
@@ -10,7 +10,7 @@ function Navigation() {
 
     let loginActions = (
         <>
-            <li style={{ float: 'right' }}>
+            <li style={{ float: 'right' }}> 
                 <a href="#" onClick={() => history.push("/sign-up")}>
                     Sign Up
                 </a>
