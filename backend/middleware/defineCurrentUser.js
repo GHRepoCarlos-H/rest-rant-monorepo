@@ -24,3 +24,4 @@ async function defineCurrentUser(req, res, next){
 }
 
 module.exports = defineCurrentUser
+
