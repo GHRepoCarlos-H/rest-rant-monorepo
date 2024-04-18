@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 function Home() {
   return (
     <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>

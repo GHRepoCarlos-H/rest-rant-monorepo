@@ -1,14 +1,14 @@
-import { useContext } from 'react'
+import React, { useContext } from 'react';
 import { useHistory } from "react-router";
 import { CurrentUser } from './contexts/CurrentUser';
 
 function Navigation() {
 
-    const history = useHistory()
+    const history = useHistory();
 
-    const { currentUser } = useContext(CurrentUser)
+    const { currentUser } = useContext(CurrentUser);
 
-    let loginActions = (
+    let loginActions: JSX.Element = (
         <>
             <li style={{ float: 'right' }}> 
                 <a href="#" onClick={() => history.push("/sign-up")}>
@@ -21,26 +21,26 @@ function Navigation() {
                 </a>
             </li>
         </>
-    )
+    );
 
     if (currentUser) {
         loginActions = (
             <li style={{ float: 'right' }}>
                 Logged in as {currentUser.firstName} {currentUser.lastName}
             </li>
-        )
+        );
     }
 
-    let addPlaceButton = null
+    let addPlaceButton: JSX.Element | null = null;
 
     if (currentUser?.role === 'admin') {
         addPlaceButton = (
             <li>
-                <a href='#' onClick={ () => history.push('/places/new')}>
+                <a href='#' onClick={() => history.push('/places/new')}>
                     Add place
                 </a>
             </li>
-        )
+        );
     }
 
     return (
@@ -60,7 +60,7 @@ function Navigation() {
                 {loginActions}
             </ul>
         </nav>
-    )
+    );
 }
 
 export default Navigation;

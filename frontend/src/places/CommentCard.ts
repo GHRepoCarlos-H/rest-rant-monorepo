@@ -1,10 +1,26 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { CurrentUser } from "../contexts/CurrentUser";
 
-function CommentCard({ comment, onDelete }) {
+interface Comment {
+    rant: boolean;
+    content: string;
+    authorId: string;
+    author?: {
+        firstName: string;
+        lastName: string;
+    };
+    stars: number;
+}
+
+interface Props {
+    comment: Comment;
+    onDelete: () => void;
+}
+
+function CommentCard({ comment, onDelete }: Props) {
     const { currentUser } = useContext(CurrentUser);
 
-    let deleteButton = null;
+    let deleteButton: JSX.Element | null = null;
 
     if (currentUser?.userId === comment.authorId) {
         deleteButton = (
@@ -28,3 +44,4 @@ function CommentCard({ comment, onDelete }) {
 }
 
 export default CommentCard;
+

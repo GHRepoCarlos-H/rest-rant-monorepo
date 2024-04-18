@@ -1,28 +1,40 @@
-import { useContext, useState } from "react"
-import { CurrentUser } from "../contexts/CurrentUser"
+import React, { useContext, useState } from "react";
+import { CurrentUser } from "../contexts/CurrentUser";
 
+interface Comment {
+    content: string;
+    stars: number;
+    rant: boolean;
+}
 
-function NewCommentForm({ place, onSubmit }) {
+interface NewCommentFormProps {
+    place: {
+        rant: boolean;
+    };
+    onSubmit: (comment: Comment) => void;
+}
 
-    const [comment, setComment] = useState({
+function NewCommentForm({ place, onSubmit }: NewCommentFormProps) {
+    const [comment, setComment] = useState<Comment>({
         content: '',
         stars: 3,
         rant: false,
-    })
+    });
 
-
-    function handleSubmit(e) {
-        e.preventDefault()
-        onSubmit(comment)
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        onSubmit(comment);
         setComment({
             content: '',
             stars: 3,
             rant: false,
-        })
+        });
     }
-    const { currentUser } = useContext(CurrentUser)
-    if (!currentUser){
-        return<p>You must be logged in to leave a comment</p>
+
+    const { currentUser } = useContext(CurrentUser);
+
+    if (!currentUser) {
+        return <p>You must be logged in to leave a comment</p>;
     }
 
     return (
@@ -45,7 +57,7 @@ function NewCommentForm({ place, onSubmit }) {
                     <label htmlFor="stars">Star Rating</label>
                     <input
                         value={comment.stars}
-                        onChange={e => setComment({ ...comment, stars: e.target.value })}
+                        onChange={e => setComment({ ...comment, stars: parseFloat(e.target.value) })}
                         type="range"
                         step="0.5"
                         min="1"
@@ -56,10 +68,10 @@ function NewCommentForm({ place, onSubmit }) {
                     />
                 </div>
                 <div className="form-group col-sm-4">
-                    <label htmlFor="rand">Rant</label>
+                    <label htmlFor="rant">Rant</label>
                     <input
-                        checked={place.rant}
-                        onClick={e => setComment({ ...comment, rant: e.target.checked })}
+                        checked={comment.rant}
+                        onChange={e => setComment({ ...comment, rant: e.target.checked })}
                         type="checkbox"
                         id="rant"
                         name="rant"
@@ -69,7 +81,7 @@ function NewCommentForm({ place, onSubmit }) {
             </div>
             <input className="btn btn-primary" type="submit" value="Add Comment" />
         </form>
-    )
+    );
 }
 
-export default NewCommentForm
+export default NewCommentForm;
