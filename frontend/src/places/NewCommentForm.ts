@@ -1,40 +1,40 @@
-import { useState, useEffect } from "react"
-import { useHistory } from "react-router"
+import React, { useContext, useState } from "react";
+import { CurrentUser } from "../contexts/CurrentUser";
 
-function NewCommentForm({ place, onSubmit }) {
+interface Comment {
+    content: string;
+    stars: number;
+    rant: boolean;
+}
 
-    const [authors, setAuthors] = useState([])
+interface NewCommentFormProps {
+    place: {
+        rant: boolean;
+    };
+    onSubmit: (comment: Comment) => void;
+}
 
-    const [comment, setComment] = useState({
+function NewCommentForm({ place, onSubmit }: NewCommentFormProps) {
+    const [comment, setComment] = useState<Comment>({
         content: '',
         stars: 3,
         rant: false,
-        authorId: ''
-    })
+    });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch(`http://localhost:5000/users`)
-            const users = await response.json()
-            setComment({ ...comment, authorId: users[0]?.userId})
-            setAuthors(users)
-        }
-        fetchData()
-    }, [])
-
-    let authorOptions = authors.map(author => {
-        return <option key={author.userId} value={author.userId}>{author.firstName} {author.lastName}</option>
-    })
-
-    function handleSubmit(e) {
-        e.preventDefault()
-        onSubmit(comment)
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        onSubmit(comment);
         setComment({
             content: '',
             stars: 3,
             rant: false,
-            authorId: authors[0]?.userId
-        })
+        });
+    }
+
+    const { currentUser } = useContext(CurrentUser);
+
+    if (!currentUser) {
+        return <p>You must be logged in to leave a comment</p>;
     }
 
     return (
@@ -54,16 +54,10 @@ function NewCommentForm({ place, onSubmit }) {
             </div>
             <div className="row">
                 <div className="form-group col-sm-4">
-                    <label htmlFor="state">Author</label>
-                    <select className="form-control" value={comment.authorId} onChange={e => setComment({ ...comment, authorId: e.target.value })}>
-                        {authorOptions}
-                    </select>
-                </div>
-                <div className="form-group col-sm-4">
                     <label htmlFor="stars">Star Rating</label>
                     <input
                         value={comment.stars}
-                        onChange={e => setComment({ ...comment, stars: e.target.value })}
+                        onChange={e => setComment({ ...comment, stars: parseFloat(e.target.value) })}
                         type="range"
                         step="0.5"
                         min="1"
@@ -74,10 +68,10 @@ function NewCommentForm({ place, onSubmit }) {
                     />
                 </div>
                 <div className="form-group col-sm-4">
-                    <label htmlFor="rand">Rant</label>
+                    <label htmlFor="rant">Rant</label>
                     <input
-                        checked={place.rant}
-                        onClick={e => setComment({ ...comment, rant: e.target.checked })}
+                        checked={comment.rant}
+                        onChange={e => setComment({ ...comment, rant: e.target.checked })}
                         type="checkbox"
                         id="rant"
                         name="rant"
@@ -87,7 +81,7 @@ function NewCommentForm({ place, onSubmit }) {
             </div>
             <input className="btn btn-primary" type="submit" value="Add Comment" />
         </form>
-    )
+    );
 }
 
-export default NewCommentForm
+export default NewCommentForm;

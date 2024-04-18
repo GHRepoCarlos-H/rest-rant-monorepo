@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 function Error404() {
     return (
         <main>
@@ -10,3 +12,4 @@ function Error404() {
 }
 
 export default Error404;
+
